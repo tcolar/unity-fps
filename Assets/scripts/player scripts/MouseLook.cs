@@ -85,7 +85,7 @@ public class MouseLook : MonoBehaviour
         currentMouseLook = new Vector2(
             Input.GetAxis(MouseAxis.MOUSE_Y), Input.GetAxis(MouseAxis.MOUSE_X));
 
-        lookAngles.x += currentMouseLook.x * sensivity * (invert ? 1f : -1f);
+        lookAngles.x += currentMouseLook.x * sensivity * (invert ? -1f : 1f);
         lookAngles.y += currentMouseLook.y * sensivity;
 
         lookAngles.x = Mathf.Clamp(lookAngles.x, lookVerticalMin, lookVerticalMax);
