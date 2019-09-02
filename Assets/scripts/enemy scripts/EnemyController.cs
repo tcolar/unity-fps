@@ -19,10 +19,10 @@ public class EnemyController : MonoBehaviour
     private EnemyState enemyState;
     public float walkSpeed = 0.5f;
     public float runSpeed = 4;
-    public float chaseDistance = 7;
+    public float chaseDistance = 20;
     private float curChaseDistance;
     public float attackDist = 2.2f;
-    public float chaseAfterAttackDist = 2f;
+    public float chaseAfterAttackDist = 4f;
     public float patrolRadiusMin = 20;
     public float patrolRadiusMax = 60;
     public float patrolForThisTime = 15;
