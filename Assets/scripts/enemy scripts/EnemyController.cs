@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
     private EnemyState enemyState;
     public float walkSpeed = 0.5f;
     public float runSpeed = 4;
-    public float chaseDistance = 20;
+    public float chaseDistance = 7;
     private float curChaseDistance;
     public float attackDist = 2.2f;
     public float chaseAfterAttackDist = 4f;
@@ -30,6 +30,7 @@ public class EnemyController : MonoBehaviour
     public float waitBeforeAttack = 2;
     private float attackTimer;
     private Transform target;
+    public GameObject attackPoint;
 
     void Awake()
     {
@@ -158,5 +159,23 @@ public class EnemyController : MonoBehaviour
         NavMeshHit navHit;
         NavMesh.SamplePosition(randDir, out navHit, randRadius, -1);
         navAgent.SetDestination(navHit.position);
+    }
+
+    void TurnOnAttackPoint()
+    {
+        attackPoint.SetActive(true);
+    }
+
+    void TurnOffAttackPoint()
+    {
+        if (attackPoint.activeInHierarchy)
+        {
+            attackPoint.SetActive(false);
+        }
+    }
+
+    public EnemyState EnemyState
+    {
+        get; set;
     }
 }

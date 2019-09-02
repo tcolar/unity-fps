@@ -50,33 +50,36 @@ public class WeaponHandler : MonoBehaviour
         anim.SetBool(AnimationTags.AIM_PARAMETER, canAim);
     }
 
-    void SetMuzzleFlash(bool on )
+    void TurnOnMuzzleFlash()
     {
-        muzzleFlash.SetActive(on);
+        muzzleFlash.SetActive(true);
     }
 
-    void PlayShootSound()
+    void TurnOffMuzzleFlash()
+    {
+        muzzleFlash.SetActive(false);
+    }
+
+    public void PlayShootSound()
     {
         shootSound.Play();
     }
 
-    void PlayReloadSound()
+    public void PlayReloadSound()
     {
         reloadSound.Play();
     }
 
-    void SetAttackPoint(bool on)
+    void TurnOnAttackPoint()
     {
-        if (on)
+        attackPoint.SetActive(true);
+    }
+
+    void TurnOffAttackPoint()
+    {
+        if (attackPoint.activeInHierarchy)
         {
-            attackPoint.SetActive(true);
-        }
-        else
-        {
-            if (attackPoint.activeInHierarchy)
-            {
-                attackPoint.SetActive(false);
-            }
+            attackPoint.SetActive(false);
         }
     }
 
