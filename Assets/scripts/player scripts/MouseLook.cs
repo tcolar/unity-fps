@@ -28,9 +28,9 @@ public class MouseLook : MonoBehaviour
     [SerializeField]
     private float rollSpeed = 3;
 
-    // FIX: Video was using a Vector2 for lokk_vertical_limits
+    // FIX: Video was using a Vector2 for look_vertical_limits
     // but that does not render in the unity properly
-    // it showd but the values are 0, which breaks looking up & down
+    // it shows but the values are 0, which breaks looking up & down
     [SerializeField]
     private float lookVerticalMin = -70;
 
@@ -90,14 +90,13 @@ public class MouseLook : MonoBehaviour
 
         lookAngles.x = Mathf.Clamp(lookAngles.x, lookVerticalMin, lookVerticalMax);
 
-        currentRollAngle =
+        /*currentRollAngle =
             Mathf.Lerp(currentRollAngle, Input.GetAxisRaw(MouseAxis.MOUSE_X)
-            * rollAngle, Time.deltaTime * rollSpeed);
+            * rollAngle, Time.deltaTime * rollSpeed);*/
 
         lookRoot.localRotation = Quaternion.Euler(lookAngles.x, 0f, 0f);
 
-        // FIX: look_Angles.x was missing in video, can't look up/down
-        playerRoot.localRotation = Quaternion.Euler(lookAngles.x, lookAngles.y, 0f);
+        playerRoot.localRotation = Quaternion.Euler(0f, lookAngles.y, 0f);
 
     }
 } 
