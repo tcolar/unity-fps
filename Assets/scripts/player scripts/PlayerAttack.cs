@@ -9,9 +9,21 @@ public class PlayerAttack : MonoBehaviour
     private float nextTimeToFire;
     public float damage = 20;
 
+    private Animator ZoomCameraAnim;
+    private bool zoom, isAiming;
+    private Camera mainCam;
+    private GameObject crossHair;
+
     private void Awake()
     {
         wm = GetComponent<WeaponManager>();
+        // FIX: this works unlike the transform crazyness
+        ZoomCameraAnim = GameObject.FindWithTag(Tags.ZOOM_CAMERA)
+            .GetComponent<Animator>();
+        //ZoomCameraAnim = transform.Find(Tags.LOOK_ROOT).transform.
+        //    Find(Tags.ZOOM_CAMERA).GetComponent<Animator>();
+        crossHair = GameObject.FindWithTag(Tags.CROSSHAIR);
+        mainCam = Camera.main; 
     }
 
     // Start is called before the first frame update
@@ -24,6 +36,7 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {
         WeaponShoot();
+        Zoom();
     }
 
     void WeaponShoot()
@@ -47,6 +60,46 @@ public class PlayerAttack : MonoBehaviour
         } else
         {
             // spear or arrow
+            if(isAiming)
+            {
+                wm.GetCurrentWeapon().ShootAnimation();
+                if(wm.GetCurrentWeapon().bulletType == WeaponBulletType.ARROW)
+                {
+
+                } else if (wm.GetCurrentWeapon().bulletType == WeaponBulletType.SPEAR)
+                {
+
+                }
+            }
+        }
+    }
+
+    void Zoom()
+    {
+        if (wm.GetCurrentWeapon().weaponAim == WeaponAim.AIM)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                ZoomCameraAnim.Play(AnimationTags.ZOOM_IN_ANIM);
+                crossHair.SetActive(false);
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                ZoomCameraAnim.Play(AnimationTags.ZOOM_OUT_ANIM);
+                crossHair.SetActive(true);
+            }
+        }
+        else if (wm.GetCurrentWeapon().weaponAim == WeaponAim.SELF_AIM)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                wm.GetCurrentWeapon().Aim(true);
+                isAiming = true;
+            } else if (Input.GetMouseButtonUp(1))
+            {
+                wm.GetCurrentWeapon().Aim(false);
+                isAiming = false;
+            }
         }
     }
 }

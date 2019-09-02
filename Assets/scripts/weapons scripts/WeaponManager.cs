@@ -11,8 +11,8 @@ public class WeaponManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enableWeapon(0);
-    }
+		weapons[0].gameObject.SetActive(true);
+	}
 
     // Update is called once per frame
     void Update()
