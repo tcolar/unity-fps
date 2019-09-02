@@ -27,8 +27,11 @@ public class Health : MonoBehaviour
 
     public void ApplyDamage(float damage)
     {
+        print("ad p:" + isPlayer + " b:" + isBoar + " c:" + isCannibal);
         if (isDead) return;
+
         health -= damage;
+
         if(isPlayer)
         {
             // show health
@@ -55,7 +58,46 @@ public class Health : MonoBehaviour
         {
             GetComponent<Animator>().enabled = false;
             GetComponent<BoxCollider>().isTrigger = false;
-            GetComponent<Rigidbody>().AddTorque(-transform.forward * 50f);
+            GetComponent<Rigidbody>().AddTorque(-transform.forward * 20f);
+
+            ec.enabled = false;
+            navAgent.enabled = false;
+            enemyAnim.enabled = false;
+        } else if(isBoar)
+        {
+            navAgent.velocity = Vector3.zero;
+            navAgent.isStopped = true;
+            ec.enabled = false;
+            enemyAnim.Dead();
+        } else if(isPlayer)
+        {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(Tags.ENEMY_TAG);
+            foreach (var enemy in enemies)
+            {
+                enemy.GetComponent<EnemyController>().enabled = false;
+            }
+
+            GetComponent<PlayerMovement>().enabled = false;
+            GetComponent<PlayerAttack>().enabled = false;
+            GetComponent<WeaponManager>().GetCurrentWeapon().gameObject.SetActive(false);
         }
+
+        if(tag == Tags.PLAYER_TAG)
+        {
+            Invoke("RestartGame", 3);
+        } else
+        {
+            Invoke("TurnOffGameObject", 3f);
+        }
+    }
+
+    void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
+    }
+
+    void TurnOffGameObject()
+    {
+        gameObject.SetActive(false);
     }
 }

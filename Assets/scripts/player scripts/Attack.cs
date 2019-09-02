@@ -14,7 +14,8 @@ public class Attack : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, radius, layerMask);
         if( hits.Length > 0 )
         {
-            print("Touched" + hits[0].gameObject.tag);
+            print("Hit " + hits[0].gameObject.name);
+            hits[0].gameObject.GetComponent<Health>().ApplyDamage(damage);
             gameObject.SetActive(false);
         }
     }

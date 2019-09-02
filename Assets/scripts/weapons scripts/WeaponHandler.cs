@@ -72,11 +72,13 @@ public class WeaponHandler : MonoBehaviour
 
     void TurnOnAttackPoint()
     {
+        print("toap");
         attackPoint.SetActive(true);
     }
 
     void TurnOffAttackPoint()
     {
+        print("-toap");
         if (attackPoint.activeInHierarchy)
         {
             attackPoint.SetActive(false);
