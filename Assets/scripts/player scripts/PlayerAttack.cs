@@ -13,6 +13,12 @@ public class PlayerAttack : MonoBehaviour
     private bool zoom, isAiming;
     private Camera mainCam;
     private GameObject crossHair;
+    [SerializeField]
+    private GameObject arrowPrefab;
+    [SerializeField]
+    private GameObject spearPrefab;
+    [SerializeField]
+    private Transform arrowBowStartPos;
 
     private void Awake()
     {
@@ -47,6 +53,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 nextTimeToFire = Time.time + 1f / fireRate;
                 wm.GetCurrentWeapon().ShootAnimation();
+                BulletFired();
             }
         }
         if (!Input.GetMouseButtonDown(0)) return;
@@ -56,7 +63,7 @@ public class PlayerAttack : MonoBehaviour
         } else if (wm.GetCurrentWeapon().bulletType == WeaponBulletType.BULLET)
         {
             wm.GetCurrentWeapon().ShootAnimation();
-            // BulletFired();
+            BulletFired();
         } else
         {
             // spear or arrow
@@ -65,10 +72,10 @@ public class PlayerAttack : MonoBehaviour
                 wm.GetCurrentWeapon().ShootAnimation();
                 if(wm.GetCurrentWeapon().bulletType == WeaponBulletType.ARROW)
                 {
-
+                    ThrowArrowOrSpear(true);
                 } else if (wm.GetCurrentWeapon().bulletType == WeaponBulletType.SPEAR)
                 {
-
+                    ThrowArrowOrSpear(false);
                 }
             }
         }
@@ -100,6 +107,22 @@ public class PlayerAttack : MonoBehaviour
                 wm.GetCurrentWeapon().Aim(false);
                 isAiming = false;
             }
+        }
+    }
+
+    void ThrowArrowOrSpear(bool isArrow)
+    {
+        GameObject projectile = isArrow ? Instantiate(arrowPrefab): Instantiate(spearPrefab);
+        projectile.transform.position = arrowBowStartPos.position;
+        projectile.GetComponent<ArrowBow>().Launch(mainCam);
+    }
+
+    void BulletFired()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit))
+        {
+            print("ng: " + hit.transform.gameObject.name);
         }
     }
 }
