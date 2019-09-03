@@ -64,9 +64,18 @@ public class PlayerSprintAndCrouch : MonoBehaviour {
 
     void WalkOrSprint()
 	{
-        sprintVal += (isSprinting ? -1f : 1f) * sprintThreshold * Time.deltaTime;
-        if (sprintVal < 0) sprintVal = 0;
-        if (sprintVal > 100) sprintVal = 100;
+        if (isSprinting && Input.GetKey(KeyCode.W))
+        {
+            sprintVal -= sprintThreshold * Time.deltaTime;
+            if (sprintVal < 0) sprintVal = 0;
+        }
+        else
+        {
+            sprintVal += sprintThreshold * Time.deltaTime;
+            if (sprintVal > 100) sprintVal = 100;
+        }
+        stats.DisplayStaminaStats(sprintVal);
+
         if (!isCrouched)
         {
             if (Input.GetKeyUp(KeyCode.LeftShift) || sprintVal <= 0)
@@ -78,7 +87,6 @@ public class PlayerSprintAndCrouch : MonoBehaviour {
                 Sprint();
             }
         }
-        stats.DisplayStaminaStats(sprintVal);
 	}
 
     void Walk()
