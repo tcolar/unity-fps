@@ -13,6 +13,7 @@ public class Health : MonoBehaviour
     public bool isPlayer, isBoar, isCannibal;
 
     private bool isDead;
+    private EnemyAudio enemyAudio;
 
     void Awake()
     {
@@ -21,7 +22,8 @@ public class Health : MonoBehaviour
             enemyAnim = GetComponent<EnemyAnimator>();
             ec = GetComponent<EnemyController>();
             navAgent = GetComponent<NavMeshAgent>();
-            // TODO: audio, stats
+
+            enemyAudio = GetComponentInChildren<EnemyAudio>();
         }
     }
 
@@ -63,12 +65,17 @@ public class Health : MonoBehaviour
             ec.enabled = false;
             navAgent.enabled = false;
             enemyAnim.enabled = false;
+
+
+            StartCoroutine(DeadSound());
         } else if(isBoar)
         {
             navAgent.velocity = Vector3.zero;
             navAgent.isStopped = true;
             ec.enabled = false;
             enemyAnim.Dead();
+
+            StartCoroutine(DeadSound());
         } else if(isPlayer)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(Tags.ENEMY_TAG);
@@ -99,5 +106,11 @@ public class Health : MonoBehaviour
     void TurnOffGameObject()
     {
         gameObject.SetActive(false);
+    }
+
+    IEnumerator DeadSound()
+    {
+        yield return new WaitForSeconds(0.3f);
+        enemyAudio.PlayDead();
     }
 }
