@@ -44,6 +44,10 @@ public class ArrowBow : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        DeactivateGameObject();
+        if(other.tag == Tags.ENEMY_TAG)
+        {
+            other.GetComponent<Health>().ApplyDamage(damage);
+            gameObject.SetActive(false);
+        }
     }
 }
