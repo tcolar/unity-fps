@@ -14,6 +14,7 @@ public class Health : MonoBehaviour
 
     private bool isDead;
     private EnemyAudio enemyAudio;
+    private PlayerStats stats;
 
     void Awake()
     {
@@ -24,6 +25,10 @@ public class Health : MonoBehaviour
             navAgent = GetComponent<NavMeshAgent>();
 
             enemyAudio = GetComponentInChildren<EnemyAudio>();
+        }
+        if(isPlayer)
+        {
+            stats = GetComponent<PlayerStats>();
         }
     }
 
@@ -36,7 +41,7 @@ public class Health : MonoBehaviour
 
         if(isPlayer)
         {
-            // show health
+            stats.DispalyHealthStats(health);
         }
 
         if(isBoar || isCannibal)
